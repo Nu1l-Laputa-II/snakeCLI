@@ -63,7 +63,7 @@ void updateGame() {
 void drawGame() {
     clearScreen();
     
-    // Draw border and game area
+    // Draw border and game area (scan)
     for (int y = 0; y < HEIGHT; y++) {
         for (int x = 0; x < WIDTH; x++) {
             if (y == 0 || y == HEIGHT-1 || x == 0 || x == WIDTH-1)
@@ -107,8 +107,8 @@ int isGameOver() {
 }
 
 void handleInput() {
-    if (_kbhit()) {
-        char key = _getch();
+    if (_kbhit()) { // Check if a key is pressed
+        char key = _getch();  // Get the pressed key
         switch(key) {
             case 'w': if (snake.direction != 2) snake.direction = 0; break;
             case 'd': if (snake.direction != 3) snake.direction = 1; break;
