@@ -61,33 +61,32 @@ void updateGame() {
 }
 
 void drawGame() {
-    clearScreen();
-    
-    // Draw border and game area (scan)
+    // Draw border and game area
     for (int y = 0; y < HEIGHT; y++) {
         for (int x = 0; x < WIDTH; x++) {
+            char ch = ' ';
             if (y == 0 || y == HEIGHT-1 || x == 0 || x == WIDTH-1)
-                printf("#");
+                ch = '#';
             else {
                 int isSnake = 0;
                 for (int i = 0; i < snake.length; i++) {
                     if (snake.body[i].x == x && snake.body[i].y == y) {
-                        printf("O");
+                        ch = 'O';
                         isSnake = 1;
                         break;
                     }
                 }
-                if (!isSnake) {
-                    if (food.x == x && food.y == y)
-                        printf("*");
-                    else
-                        printf(" ");
-                }
+                if (!isSnake && food.x == x && food.y == y)
+                    ch = '*';
             }
+            writeToBuffer(x, y, ch);
         }
-        printf("\n");
     }
-    printf("\nScore: %d\n", score);
+    showBuffer();
+    
+    // Score display remains direct console output
+    SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), (COORD){0, HEIGHT + 1});
+    printf("Score: %d", score);
 }
 
 int isGameOver() {

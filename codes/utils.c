@@ -1,4 +1,5 @@
 #include "utils.h"
+#include "game.h"
 #include <windows.h>
 
 // 清屏函数
@@ -29,4 +30,32 @@ void clearScreen() {
 void sleep(int milliseconds) {
     // 调用 Windows API 的 Sleep 函数，暂停指定的毫秒数
     Sleep(milliseconds);
+}
+
+static CHAR_INFO* screenBuffer;
+static HANDLE hConsole;
+static COORD bufferSize;
+static SMALL_RECT writeRegion;
+
+void initDoubleBuffer() {
+    hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+    bufferSize.X = WIDTH;
+    bufferSize.Y = HEIGHT;
+    writeRegion = (SMALL_RECT){ 0, 0, WIDTH - 1, HEIGHT - 1 };
+    screenBuffer = malloc(sizeof(CHAR_INFO) * WIDTH * HEIGHT);
+}
+
+void cleanupDoubleBuffer() {
+    free(screenBuffer);
+}
+
+void writeToBuffer(int x, int y, char ch) {
+    if (x >= 0 && x < WIDTH && y >= 0 && y < HEIGHT) {
+        screenBuffer[y * WIDTH + x].Char.AsciiChar = ch;
+        screenBuffer[y * WIDTH + x].Attributes = FOREGROUND_GREEN | FOREGROUND_INTENSITY;
+    }
+}
+
+void showBuffer() {
+    WriteConsoleOutput(hConsole, screenBuffer, bufferSize, (COORD){0,0}, &writeRegion);
 }

@@ -46,6 +46,13 @@ typedef struct {
 - 得分显示
 
 ### 4.2 刷新机制
-- 清屏
-- 重绘
+- 双缓冲渲染
+  - 后台缓冲区绘制
+  - 原子性显示更新
+  - 消除画面闪烁
 - 延时控制
+
+### 4.3 双缓冲实现
+- 使用 Windows Console API
+- CHAR_INFO 数组作为后台缓冲
+- WriteConsoleOutput 原子性更新

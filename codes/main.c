@@ -6,6 +6,9 @@ int main() {
     // Initialize random seed
     srand(time(NULL));
     
+    // Initialize double buffer
+    initDoubleBuffer();
+    
     // Initialize game
     initGame();
     
@@ -20,5 +23,9 @@ int main() {
     
     // Game over
     printf("\nGame Over! Final Score: %d\n", score);
+    
+    // Cleanup double buffer
+    cleanupDoubleBuffer();
+    
     return 0;
 }

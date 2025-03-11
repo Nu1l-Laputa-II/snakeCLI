@@ -29,6 +29,10 @@ typedef struct {
     // 3 = LEFT  (按键A) - 向左移动
 } Snake;
 
+// 全局游戏状态变量
+extern int score;
+extern int gameOver;
+
 // 游戏核心函数声明
 
 // 初始化游戏状态，包括蛇的初始位置和食物的生成
