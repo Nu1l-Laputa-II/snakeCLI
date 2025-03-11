@@ -11,6 +11,10 @@
 #define HEIGHT 20     // 游戏界面高度
 #define SNAKE_MAX_LENGTH 100  // 蛇的最大长度
 
+// 方向移动补偿系数
+#define VERTICAL_COMPENSATION 1.5    // 增大垂直补偿（原来是2）
+#define HORIZONTAL_COMPENSATION 1  // 水平方向补偿
+
 // 位置结构体，用于存储坐标
 typedef struct {
     int x;  // x坐标

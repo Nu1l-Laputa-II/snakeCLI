@@ -6,6 +6,10 @@ Position food;
 int score = 0;
 int gameOver = 0;
 
+// 添加垂直和水平移动计数器
+static int verticalMoveCounter = 0;
+static int horizontalMoveCounter = 0;
+
 void initGame() {
     // Initialize snake
     snake.length = 1;
@@ -37,27 +41,47 @@ void generateFood() {
 
 void updateGame() {
     Position newHead = snake.body[0];
+    int shouldMove = 1;
 
-    // Update head position based on direction
-    switch (snake.direction) {
-        case 0: newHead.y--; break;
-        case 1: newHead.x++; break;
-        case 2: newHead.y++; break;
-        case 3: newHead.x--; break;
+    // 对垂直和水平移动进行速度补偿
+    if (snake.direction == 0 || snake.direction == 2) {  // 上下方向
+        verticalMoveCounter++;
+        if (verticalMoveCounter < VERTICAL_COMPENSATION) {
+            shouldMove = 0;
+        } else {
+            verticalMoveCounter = 0;
+        }
+    } else {  // 左右方向
+        horizontalMoveCounter++;
+        if (horizontalMoveCounter < HORIZONTAL_COMPENSATION) {
+            shouldMove = 0;
+        } else {
+            horizontalMoveCounter = 0;
+        }
     }
 
-    // Check if food is eaten
-    if (newHead.x == food.x && newHead.y == food.y) {
-        score += 10;
-        snake.length++;
-        generateFood();
-    }
+    if (shouldMove) {
+        // Update head position based on direction
+        switch (snake.direction) {
+            case 0: newHead.y--; break;
+            case 1: newHead.x++; break;
+            case 2: newHead.y++; break;
+            case 3: newHead.x--; break;
+        }
 
-    // Move snake body
-    for (int i = snake.length - 1; i > 0; i--) {
-        snake.body[i] = snake.body[i-1];
+        // Check if food is eaten
+        if (newHead.x == food.x && newHead.y == food.y) {
+            score += 10;
+            snake.length++;
+            generateFood();
+        }
+
+        // Move snake body
+        for (int i = snake.length - 1; i > 0; i--) {
+            snake.body[i] = snake.body[i-1];
+        }
+        snake.body[0] = newHead;
     }
-    snake.body[0] = newHead;
 }
 
 void drawGame() {
